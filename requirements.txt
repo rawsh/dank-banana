@@ -1,4 +1,5 @@
 sanic==22.6.2
+sentence-transformers
 transformers
 accelerate
 websockets==10.0

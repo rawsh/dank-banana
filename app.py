@@ -1,4 +1,5 @@
-from transformers import pipeline
+# from transformers import pipeline
+from sentence_transformers import SentenceTransformer
 import torch
 
 # Init is ran on server startup
@@ -7,7 +8,8 @@ def init():
     global model
     
     device = 0 if torch.cuda.is_available() else -1
-    model = pipeline('fill-mask', model='bert-base-uncased', device=device)
+    # model = pipeline('fill-mask', model='bert-base-uncased', device=device)
+    model = SentenceTransformer('multi-qa-mpnet-base-dot-v1', device=device)
 
 # Inference is ran for every server call
 # Reference your preloaded global model variable here.
@@ -15,12 +17,12 @@ def inference(model_inputs:dict) -> dict:
     global model
 
     # Parse out your arguments
-    prompt = model_inputs.get('prompt', None)
-    if prompt == None:
-        return {'message': "No prompt provided"}
+    texts = model_inputs.get('text', None)
+    if texts == None:
+        return {'message': "No text provided"}
     
     # Run the model
-    result = model(prompt)
+    result = model.encode(texts)
 
     # Return the results as a dictionary
     return result
