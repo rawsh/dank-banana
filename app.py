@@ -7,7 +7,7 @@ import torch
 def init():
     global model
     
-    device = 0 if torch.cuda.is_available() else -1
+    device = 1 if torch.cuda.is_available() else None
     # model = pipeline('fill-mask', model='bert-base-uncased', device=device)
     model = SentenceTransformer('multi-qa-mpnet-base-dot-v1', device=device)
 
